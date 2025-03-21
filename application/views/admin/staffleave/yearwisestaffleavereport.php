@@ -1,13 +1,16 @@
-<style type="text/css">
+s<style type="text/css">
     @media print {
 
         .no-print,
         .no-print * {
             display: none !important;
         }
+
         .table-wrapper {
-            margin: 20mm auto !important; /* Adds margin around the table */
-            width: 90% !important; /* Adjusts table width to fit within margins */
+            margin: 20mm auto !important;
+            /* Adds margin around the table */
+            width: 90% !important;
+            /* Adjusts table width to fit within margins */
         }
     }
 
@@ -17,19 +20,22 @@
         font-weight: bold;
         padding: 10px;
     }
-    
-    
 </style>
 <style>
-    .table th, .table td {
-        padding: 10px; /* Increase padding for better spacing */
+    .table th,
+    .table td {
+        padding: 10px;
+        /* Increase padding for better spacing */
         text-align: center;
     }
+
     .table {
         width: 100%;
         table-layout: fixed;
-        border-spacing: 5px; /* Adds space between table cells */
-        border-collapse: separate; /* Ensures spacing works */
+        border-spacing: 5px;
+        /* Adds space between table cells */
+        border-collapse: separate;
+        /* Ensures spacing works */
     }
 </style>
 <div class="content-wrapper" style="min-height: 946px;">
@@ -48,48 +54,7 @@
                         <div class="box-body">
                             <?php echo $this->customlib->getCSRF(); ?>
                             <div class="row">
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label for="exampleInputEmail1"><?php echo "Teacher List" ?></label>
-                                        <select id="staff" name="staff" class="form-control">
-                                            <option value="select"><?php echo $this->lang->line('select'); ?></option>
-                                            <?php
-                                            foreach ($staff_list as $staff_list => $value) {
-                                            ?>
-                                                <option value="<?php echo $value["employee_id"] ?>" <?php
-                                                                                                    if ($staff_id == $value["employee_id"]) {
-                                                                                                        echo "selected =selected";
-                                                                                                    }
-                                                                                                    ?>><?php echo $value["name"]; ?></option>
-                                            <?php
-                                                $count++;
-                                            }
-                                            ?>
-                                        </select>
-                                        <span class="text-danger"><?php echo form_error('role'); ?></span>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label for="exampleInputEmail1"><?php echo $this->lang->line('month'); ?></label><small class="req"> *</small>
-                                        <select id="month" name="month" class="form-control">
-                                            <option value=""><?php echo $this->lang->line('select'); ?></option>
-                                            <?php
-                                            foreach ($monthlist as $m_key => $month) {
-                                            ?>
-                                                <option value="<?php echo $m_key ?>" <?php
-                                                                                        if ($month_selected == $m_key) {
-                                                                                            echo "selected =selected";
-                                                                                        }
-                                                                                        ?>><?php echo $month; ?></option>
-                                            <?php
-                                                $count++;
-                                            }
-                                            ?>
-                                        </select>
-                                        <span class="text-danger"><?php echo form_error('month'); ?></span>
-                                    </div>
-                                </div>
+
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1"><?php echo $this->lang->line('year'); ?></label>
@@ -121,88 +86,124 @@
 
                 <?php
 
-                if (isset($resultlist)) {
+                if (isset($months)) {
                     //var_dump($resultlist);
                 ?>
                     <div class="nav-tabs-custom">
-                    <button type="button" style="margin-right: 10px; margin-top: 10px;" name="search"
-                            id="collection_print" 
-                            data-class="collection_report" 
+                        <button type="button" style="margin-right: 10px; margin-top: 10px;" name="search"
+                            id="collection_print"
+                            data-class="collection_report"
                             class="btn btn-sm btn-primary login-submit-cs fa fa-print pull-right">
-                        Print View
-                    </button>
+                            Print View
+                        </button>
                         <ul class="nav nav-tabs">
                             <li class="active"><a href="#tab_1" data-toggle="tab" aria-expanded="true"><i class="fa fa-list"></i> <?php echo $this->lang->line('list'); ?> <?php echo $this->lang->line('view'); ?></a></li>
                             <li class=""><a href="#tab_2" data-toggle="tab" aria-expanded="false"><i class="fa fa-newspaper-o"></i> <?php echo $this->lang->line('details'); ?> <?php echo $this->lang->line('view'); ?></a></li>
                         </ul>
- 
 
 
-                            <div id='collection_report'>
-                        <div  id="printcontent">
-                            <!--<div class="download_label">-->
-                            <!--    <?php echo $this->Setting_model->getCurrentSchoolName(); ?>-->
 
-                            <!--    <?php echo "LEAVE REPORT OF " . $staffname . " for the month of " . $month_selected . " " . $year_selected; ?>-->
-                            <!--</div>-->
-                            <div class="tab-pane active table-responsive no-padding" id="tab_1">
-                                <!--<h3 class="text-center"><?php echo $this->Setting_model->getCurrentSchoolName(); ?></h3>-->
-                                <h3 style="text-align:center">
-                                    <br>
-                                    <?php echo "LEAVE REPORT OF " . $staffname ?>
-                                    <br><br>
-                                </h3>
-                                <div class="table-wrapper">
-                                    <table class="table table-striped table-bordered table-hover  text-center" style="width:80%;margin:0 auto;" border="1">
-                                    <thead>
-                                        <tr>
-                                        <th><?php echo "SlNo" ?></th>
+                        <div id='collection_report'>
+                            <div id="printcontent">
+                                <!--<div class="download_label">-->
+                                <!--    <?php echo $this->Setting_model->getCurrentSchoolName(); ?>-->
 
-                                            <th><?php echo "Date" ?></th>
-                                            <th><?php echo "Leave type" ?></th>
-                                            <th><?php echo "No of days" ?></th>
-                                            <th><?php echo "Leave Taken" ?></th>
-
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php
-                                        if (empty($resultlist)) {
-                                        ?>
-                                            <!-- <tr>
-                                                                <td colspan="12" class="text-danger text-center"><?php echo $this->lang->line('no_record_found'); ?></td>
-                                                            </tr> -->
-                                            <?php
-                                        } else {
-                                            $count = 1;
-                                            // var_dump($attendance);exit;
-                                            foreach ($resultlist as $index=> $staff) {
-                                            ?>
-                                                
+                                <!--    <?php echo "LEAVE REPORT OF " . $staffname . " for the month of " . $month_selected . " " . $year_selected; ?>-->
+                                <!--</div>-->
+                                <div class="tab-pane active table-responsive no-padding" id="tab_1">
+                                    <!--<h3 class="text-center"><?php echo $this->Setting_model->getCurrentSchoolName(); ?></h3>-->
+                                    <h3 style="text-align:center">
+                                        <br>
+                                        <?php echo "LEAVE REPORT OF " . $staffname ?>
+                                        <br><br>
+                                    </h3>
+                                    <div class="table-wrapper">
+                                        <table class="table table-striped table-bordered table-hover  text-center" style="width:80%;margin:0 auto;" border="1">
+                                            <thead>
                                                 <tr>
-                                                 <td><?php echo $count+1 ?></td>
-
-                                                 <td><?php echo $staff['leave_from']; ?></td>
-                                                 <td><?php echo $staff['type']; ?></td>
-                                                 <td><?php echo $staff['leave_days']; ?></td>
-                                                 <td><?php echo $staff['type']."-". $staff['leave_days']; ?></td>
+                                                    <th rowspan="2"><?php echo "Staff Name" ?></th>
+                                                    <th colspan="<?php echo count($leaveType) ?>"><?php echo "Total Leave" ?></th>
+                                                    <th colspan="<?php echo count($leaveType) ?>"><?php echo "Leave Taken" ?></th>
+                                                    <th colspan="<?php echo count($leaveType) ?>"><?php echo "Balance Leave" ?></th>
+                                                </tr>
+                                                <tr>
+                                                    <?php foreach ($leaveType as $type) { ?>
+                                                        <th><?php echo $type['type'] ?></th>
+                                                    <?php } ?>
+                                                    <?php foreach ($leaveType as $type) { ?>
+                                                        <th><?php echo $type['type'] ?></th>
+                                                    <?php } ?>
+                                                    <?php foreach ($leaveType as $type) { ?>
+                                                        <th><?php echo $type['type'] ?></th>
+                                                    <?php } ?>
 
 
                                                 </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php
+
+                                                if (empty($months)) {
+                                                ?>
+                                                    <tr>
+                                                        <td colspan="12" class="text-danger text-center"><?php echo $this->lang->line('no_record_found'); ?></td>
+                                                    </tr>
+                                                    <?php
+                                                } else {
+
+                                                    foreach ($months as $index => $month) {
+                                                    ?>
+                                                        <tr>
+                                                            <td colspan="<?php echo count($leaveType) * 3 + 1 ?>"><?php echo $month ?></td>
+                                                        </tr>
+                                                        <?php if (!$leaves[$index]) { ?>
+                                                            <tr>
+                                                                <td colspan="<?php echo count($leaveType) * 3 + 1 ?>"><?php echo "No Leave Taken during this month" ?></td>
+                                                            </tr>
+                                                        <?php } else { ?>
+
+                                                            <?php foreach ($leaves[$index] as  $leave) {
+                                                                // var_dump($leave);
+                                                                // exit;
+                                                                // var_dump($alloted_leaves[$leave['staff_id']][$leave['leave_type_id']]);
+                                                                // exit;
+
+                                                                foreach ($leave as $row) {
+                                                                    // var_dump($row);
+                                                                    // exit;
+                                                            ?>
+                                                                    <tr>
+                                                                        <td><?php echo $row['applied_by']; ?></td>
+                                                                        <?php foreach ($alloted_leaves[$row['staff_id']] as $total_leave) { ?>
+                                                                            <td><?php echo $total_leave; ?></td>
+                                                                        <?php } ?>
 
 
-                                                
-                                        <?php
-                                                $count++;
-                                            }
-                                        }
-                                        ?>
-                                    </tbody>
-                                </table>
+
+
+                                                                    </tr>
+                                                                <?php }
+                                                                ?>
+
+                                                            <?php
+                                                            } ?>
+                                                        <?php } ?>
+
+
+
+
+
+                                                <?php
+
+                                                    }
+                                                }
+                                                ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
-                            </div>
 
-                        </div>
+                            </div>
                         </div>
                     </div>
                 <?php
@@ -282,34 +283,33 @@
     }
 </script>
 <script type="text/javascript">
-$(document).on('click', '#collection_print', function () {
-    
-    // Get the class value from the data attribute of the button
-    let content = $('#printcontent').html();
-    content = btoa(content); 
-    // Make an AJAX request to the 'printwithheaderandfooter' method
-    $.ajax({
-        url: '<?php echo base_url('admin/weeklycalendarnew/printwithheaderandfooter'); ?>',
-        method: 'post', 
-        data: {
-            data: content
-        },
-         beforeSend: function (xhr) {
-        xhr.setRequestHeader('Content-Encoding', 'gzip');
-    },
-        
-        success: function (data) {
-            console.log(data)
-           data =  data.replace(/['"]+/g, '')
-            // Redirect to the generated PDF URL
-           window.open("<?php echo base_url() ?>" + data, '_blank');
-        },
-        error: function (xhr, status, error) {
-            console.error('xhr:', xhr);
-            console.error('status:', status);
-            console.error('error:', error);
-        }
-    });
-});
+    $(document).on('click', '#collection_print', function() {
 
+        // Get the class value from the data attribute of the button
+        let content = $('#printcontent').html();
+        content = btoa(content);
+        // Make an AJAX request to the 'printwithheaderandfooter' method
+        $.ajax({
+            url: '<?php echo base_url('admin/weeklycalendarnew/printwithheaderandfooter'); ?>',
+            method: 'post',
+            data: {
+                data: content
+            },
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader('Content-Encoding', 'gzip');
+            },
+
+            success: function(data) {
+                console.log(data)
+                data = data.replace(/['"]+/g, '')
+                // Redirect to the generated PDF URL
+                window.open("<?php echo base_url() ?>" + data, '_blank');
+            },
+            error: function(xhr, status, error) {
+                console.error('xhr:', xhr);
+                console.error('status:', status);
+                console.error('error:', error);
+            }
+        });
+    });
 </script>

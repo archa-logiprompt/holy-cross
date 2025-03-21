@@ -98,7 +98,9 @@
                                                     </td>
                                                     <td class="pull-right no-print">
                                                         <a href="#leavedetails" onclick="getRecord('<?php echo $value["id"] ?>')" role="button" class="btn btn-default btn-xs" data-toggle="tooltip" title="<?php echo $this->lang->line('view'); ?>" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Processing"><i class="fa fa-reorder"></i></a>
-                                                        <a href="#leavedetails" onclick="deleteLeave('<?php echo $value["id"] ?>')" role="button" class="btn btn-default btn-xs" data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Processing"><i class="fa fa-trash"></i></a>
+                                                        <?php if ($value["status"] == "pending") { ?>
+                                                            <a href="#leavedetails" onclick="deleteLeave('<?php echo $value["id"] ?>')" role="button" class="btn btn-default btn-xs" data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Processing"><i class="fa fa-trash"></i></a>
+                                                        <?php } ?>
 
                                                         <?php if ($value["applied_by"] == $this->customlib->getAdminSessionUserName()) { ?>
                                                             <?php
@@ -186,7 +188,7 @@
                                     <th><?php echo $this->lang->line('apply'); ?> <?php echo $this->lang->line('date'); ?></th>
                                     <td><span id="applied_date"></span></td>
                                 </tr>
-                                
+
                                 <tr>
                                     <th>Leave Method </th>
                                     <td><span id="method"></span>
@@ -499,10 +501,10 @@
             keyboard: false
         });
     };
-    
-    
+
+
     function deleteLeave(id) {
-        
+
         var base_url = '<?php echo base_url() ?>';
         $.ajax({
             url: base_url + 'admin/leaverequest/deleteleave',
@@ -513,10 +515,11 @@
             dataType: "json",
             success: function(result) {
                 console.log(result);
-               window.location.reload();
-        }});
+                window.location.reload();
+            }
+        });
 
-       
+
     };
 
 

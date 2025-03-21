@@ -5,9 +5,12 @@
         .no-print * {
             display: none !important;
         }
+
         .table-wrapper {
-            margin: 20mm auto !important; /* Adds margin around the table */
-            width: 90% !important; /* Adjusts table width to fit within margins */
+            margin: 20mm auto !important;
+            /* Adds margin around the table */
+            width: 90% !important;
+            /* Adjusts table width to fit within margins */
         }
     }
 
@@ -17,19 +20,22 @@
         font-weight: bold;
         padding: 10px;
     }
-    
-    
 </style>
 <style>
-    .table th, .table td {
-        padding: 10px; /* Increase padding for better spacing */
+    .table th,
+    .table td {
+        padding: 10px;
+        /* Increase padding for better spacing */
         text-align: center;
     }
+
     .table {
         width: 100%;
         table-layout: fixed;
-        border-spacing: 5px; /* Adds space between table cells */
-        border-collapse: separate; /* Ensures spacing works */
+        border-spacing: 5px;
+        /* Adds space between table cells */
+        border-collapse: separate;
+        /* Ensures spacing works */
     }
 </style>
 <div class="content-wrapper" style="min-height: 946px;">
@@ -125,84 +131,79 @@
                     //var_dump($resultlist);
                 ?>
                     <div class="nav-tabs-custom">
-                    <button type="button" style="margin-right: 10px; margin-top: 10px;" name="search"
-                            id="collection_print" 
-                            data-class="collection_report" 
+                        <button type="button" style="margin-right: 10px; margin-top: 10px;" name="search"
+                            id="collection_print"
+                            data-class="collection_report"
                             class="btn btn-sm btn-primary login-submit-cs fa fa-print pull-right">
-                        Print View
-                    </button>
+                            Print View
+                        </button>
                         <ul class="nav nav-tabs">
                             <li class="active"><a href="#tab_1" data-toggle="tab" aria-expanded="true"><i class="fa fa-list"></i> <?php echo $this->lang->line('list'); ?> <?php echo $this->lang->line('view'); ?></a></li>
                             <li class=""><a href="#tab_2" data-toggle="tab" aria-expanded="false"><i class="fa fa-newspaper-o"></i> <?php echo $this->lang->line('details'); ?> <?php echo $this->lang->line('view'); ?></a></li>
                         </ul>
- 
 
 
-                            <div id='collection_report'>
-                        <div  id="printcontent">
-                            <!--<div class="download_label">-->
-                            <!--    <?php echo $this->Setting_model->getCurrentSchoolName(); ?>-->
 
-                            <!--    <?php echo "LEAVE REPORT OF " . $staffname . " for the month of " . $month_selected . " " . $year_selected; ?>-->
-                            <!--</div>-->
-                            <div class="tab-pane active table-responsive no-padding" id="tab_1">
-                                <!--<h3 class="text-center"><?php echo $this->Setting_model->getCurrentSchoolName(); ?></h3>-->
-                                <h3 style="text-align:center">
-                                    <br>
-                                    <?php echo "LEAVE REPORT OF " . $staffname ?>
-                                    <br><br>
-                                </h3>
-                                <div class="table-wrapper">
-                                    <table class="table table-striped table-bordered table-hover  text-center" style="width:80%;margin:0 auto;" border="1">
-                                    <thead>
-                                        <tr>
-                                        <th><?php echo "SlNo" ?></th>
+                        <div id='collection_report'>
+                            <div id="printcontent">
+                                <!--<div class="download_label">-->
+                                <!--    <?php echo $this->Setting_model->getCurrentSchoolName(); ?>-->
 
-                                            <th><?php echo "Date" ?></th>
-                                            <th><?php echo "Leave type" ?></th>
-                                            <th><?php echo "No of days" ?></th>
-                                            <th><?php echo "Leave Taken" ?></th>
-
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php
-                                        if (empty($resultlist)) {
-                                        ?>
-                                            <!-- <tr>
-                                                                <td colspan="12" class="text-danger text-center"><?php echo $this->lang->line('no_record_found'); ?></td>
-                                                            </tr> -->
-                                            <?php
-                                        } else {
-                                            $count = 1;
-                                            // var_dump($attendance);exit;
-                                            foreach ($resultlist as $index=> $staff) {
-                                            ?>
-                                                
+                                <!--    <?php echo "LEAVE REPORT OF " . $staffname . " for the month of " . $month_selected . " " . $year_selected; ?>-->
+                                <!--</div>-->
+                                <div class="tab-pane active table-responsive no-padding" id="tab_1">
+                                    <!--<h3 class="text-center"><?php echo $this->Setting_model->getCurrentSchoolName(); ?></h3>-->
+                                    <h3 style="text-align:center">
+                                        <br>
+                                        <?php echo "LEAVE REPORT OF " . $staffname ?>
+                                        <br><br>
+                                    </h3>
+                                    <div class="table-wrapper">
+                                        <table class="table table-striped table-bordered table-hover  text-center" style="width:80%;margin:0 auto;" border="1">
+                                            <thead>
                                                 <tr>
-                                                 <td><?php echo $count+1 ?></td>
-
-                                                 <td><?php echo $staff['leave_from']; ?></td>
-                                                 <td><?php echo $staff['type']; ?></td>
-                                                 <td><?php echo $staff['leave_days']; ?></td>
-                                                 <td><?php echo $staff['type']."-". $staff['leave_days']; ?></td>
-
-
+                                                    <th rowspan="2"><?php echo "Leave Date"; ?></th>
+                                                    <th rowspan="2"><?php echo "Leave Type"; ?></th>
+                                                    <th rowspan="2"><?php echo "No of Days"; ?></th>
+                                                    <th colspan="<?php echo count($leaveCount); ?>"><?php echo "Balance Leave"; ?></th>
                                                 </tr>
+                                                <tr>
+                                                    <?php $typeArr = array();
+                                                    foreach ($leaveCount as $leave) {
+                                                        $typeArr[$leave['id']] = $leave['alloted_leave']; ?>
+                                                        <th><?php echo $leave['type'] . "<br>Total - " . $leave['alloted_leave']; ?></th>
+                                                    <?php } ?>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php if (empty($resultlist)) { ?>
+                                                    <tr>
+                                                        <td colspan="<?php echo 3 + count($leaveCount); ?>" class="text-danger text-center">
+                                                            <?php echo $this->lang->line('no_record_found'); ?>
+                                                        </td>
+                                                    </tr>
+                                                <?php } else { ?>
+                                                    <?php foreach ($resultlist as $index => $staff) { ?>
+                                                        <tr>
+                                                            <td><?php echo date('d/m/Y', strtotime($staff['leave_from'])); ?></td>
+                                                            <td><?php echo $staff['type']; ?></td>
+                                                            <td><?php echo $staff['leave_days']; ?></td>
+                                                            <?php $typeArr[$staff['leave_type_id']] -= $staff['leave_days'];
+                                                            foreach ($typeArr as $leaves) {
+                                                            ?><td><?php echo $leaves; ?></td>
 
 
-                                                
-                                        <?php
-                                                $count++;
-                                            }
-                                        }
-                                        ?>
-                                    </tbody>
-                                </table>
+                                                            <?php } ?>
+                                                        </tr>
+                                                    <?php } ?>
+                                                <?php } ?>
+                                            </tbody>
+
+                                        </table>
+                                    </div>
                                 </div>
-                            </div>
 
-                        </div>
+                            </div>
                         </div>
                     </div>
                 <?php
@@ -282,34 +283,33 @@
     }
 </script>
 <script type="text/javascript">
-$(document).on('click', '#collection_print', function () {
-    
-    // Get the class value from the data attribute of the button
-    let content = $('#printcontent').html();
-    content = btoa(content); 
-    // Make an AJAX request to the 'printwithheaderandfooter' method
-    $.ajax({
-        url: '<?php echo base_url('admin/weeklycalendarnew/printwithheaderandfooter'); ?>',
-        method: 'post', 
-        data: {
-            data: content
-        },
-         beforeSend: function (xhr) {
-        xhr.setRequestHeader('Content-Encoding', 'gzip');
-    },
-        
-        success: function (data) {
-            console.log(data)
-           data =  data.replace(/['"]+/g, '')
-            // Redirect to the generated PDF URL
-           window.open("<?php echo base_url() ?>" + data, '_blank');
-        },
-        error: function (xhr, status, error) {
-            console.error('xhr:', xhr);
-            console.error('status:', status);
-            console.error('error:', error);
-        }
-    });
-});
+    $(document).on('click', '#collection_print', function() {
 
+        // Get the class value from the data attribute of the button
+        let content = $('#printcontent').html();
+        content = btoa(content);
+        // Make an AJAX request to the 'printwithheaderandfooter' method
+        $.ajax({
+            url: '<?php echo base_url('admin/weeklycalendarnew/printwithheaderandfooter'); ?>',
+            method: 'post',
+            data: {
+                data: content
+            },
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader('Content-Encoding', 'gzip');
+            },
+
+            success: function(data) {
+                console.log(data)
+                data = data.replace(/['"]+/g, '')
+                // Redirect to the generated PDF URL
+                window.open("<?php echo base_url() ?>" + data, '_blank');
+            },
+            error: function(xhr, status, error) {
+                console.error('xhr:', xhr);
+                console.error('status:', status);
+                console.error('error:', error);
+            }
+        });
+    });
 </script>

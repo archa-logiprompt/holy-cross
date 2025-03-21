@@ -3,16 +3,18 @@
 /**
  * 
  */
-class Leaverequest extends Admin_Controller {
+class Leaverequest extends Admin_Controller
+{
 
-    function __construct() {
+    function __construct()
+    {
         parent::__construct();
 
         $this->config->load("payroll");
 
         $this->load->model("staff_model");
         $this->load->model("leaverequest_model");
-		$this->load->model("superviser_model");
+        $this->load->model("superviser_model");
         $this->contract_type = $this->config->item('contracttype');
         $this->marital_status = $this->config->item('marital_status');
         $this->staff_attendance = $this->config->item('staffattendance');
@@ -21,7 +23,8 @@ class Leaverequest extends Admin_Controller {
         $this->status = $this->config->item('status');
     }
 
-    function leaverequest() {
+    function leaverequest()
+    {
         if (!$this->rbac->hasPrivilege('approve_leave_request', 'can_view')) {
             access_denied();
         }
@@ -44,7 +47,8 @@ class Leaverequest extends Admin_Controller {
         $this->load->view("admin/staff/staffleaverequest", $data);
         $this->load->view("layout/footer", $data);
     }
-    function leaveStatuspr() {
+    function leaveStatuspr()
+    {
         if ((!$this->rbac->hasPrivilege('approve_leave_requestpr', 'can_edit'))) {
             access_denied();
         }
@@ -56,7 +60,8 @@ class Leaverequest extends Admin_Controller {
         $array = array('status' => 'success', 'error' => '', 'message' => 'Record Saved Successfully');
         echo json_encode($array);
     }
-	function leaveStatusdr() {
+    function leaveStatusdr()
+    {
         if ((!$this->rbac->hasPrivilege('approve_leave_requestdr', 'can_edit'))) {
             access_denied();
         }
@@ -68,20 +73,21 @@ class Leaverequest extends Admin_Controller {
         $array = array('status' => 'success', 'error' => '', 'message' => 'Record Saved Successfully');
         echo json_encode($array);
     }
-    function leaverequesthod() {
+    function leaverequesthod()
+    {
         if (!$this->rbac->hasPrivilege('approve_leave_request_hod', 'can_view')) {
             access_denied();
         }
         $userdata = $this->customlib->getUserData();
         $this->session->set_userdata('top_menu', 'HR');
         $this->session->set_userdata('sub_menu', 'admin/leaverequest/leaverequesthod');
-		
+
         $leave_request = $this->leaverequest_model->staff_leave_requesthod($userdata['department']);
 
         $data["leave_request"] = $leave_request;
 
         $LeaveTypes = $this->staff_model->getLeaveType();
-        
+
 
         $data["leavetype"] = $LeaveTypes;
         $staffRole = $this->staff_model->getStaffRole();
@@ -92,7 +98,8 @@ class Leaverequest extends Admin_Controller {
         $this->load->view("admin/staff/staffleaverequesthod", $data);
         $this->load->view("layout/footer", $data);
     }
-    function leaveStatushod() {
+    function leaveStatushod()
+    {
         if ((!$this->rbac->hasPrivilege('approve_leave_request_hod', 'can_edit'))) {
             access_denied();
         }
@@ -104,7 +111,8 @@ class Leaverequest extends Admin_Controller {
         $array = array('status' => 'success', 'error' => '', 'message' => 'Record Saved Successfully');
         echo json_encode($array);
     }
-function leaveStatussuperviser() {
+    function leaveStatussuperviser()
+    {
         if ((!$this->rbac->hasPrivilege('superviser_approve', 'can_edit'))) {
             access_denied();
         }
@@ -117,14 +125,16 @@ function leaveStatussuperviser() {
         echo json_encode($array);
     }
 
-function deleteLeave(){
-    $id=$this->input->post('id');
-    // $this->db->where('id',$id)->delete('staff_leave_request');
-    echo json_encode("deleted");
-}
+    function deleteLeave()
+    {
+        $id = $this->input->post('id');
+        $this->db->where('id', $id)->delete('staff_leave_request');
+        echo json_encode("deleted");
+    }
 
 
-    function countLeave($id) {
+    function countLeave($id)
+    {
         $lid = $this->input->post("lid");
         $alloted_leavetype = $this->leaverequest_model->allotedLeaveType($id);
 
@@ -168,7 +178,8 @@ function deleteLeave(){
         echo $html;
     }
 
-    function leaveStatus() {
+    function leaveStatus()
+    {
         if ((!$this->rbac->hasPrivilege('approve_leave_request', 'can_edit'))) {
             access_denied();
         }
@@ -181,10 +192,11 @@ function deleteLeave(){
         echo json_encode($array);
     }
 
-    function leaveRecord() {
-// if(!$this->rbac->hasPrivilege('leave_request','can_view')){
-//         access_denied();
-//         }
+    function leaveRecord()
+    {
+        // if(!$this->rbac->hasPrivilege('leave_request','can_view')){
+        //         access_denied();
+        //         }
         $id = $this->input->post("id");
 
         $result = $this->staff_model->getLeaveRecord($id);
@@ -195,11 +207,12 @@ function deleteLeave(){
         $result->days = $this->dateDifference($result->leave_from, $result->leave_to);
         echo json_encode($result);
     }
-	
-	function leaveRecordsuper() {
-// if(!$this->rbac->hasPrivilege('leave_request','can_view')){
-//         access_denied();
-//         }
+
+    function leaveRecordsuper()
+    {
+        // if(!$this->rbac->hasPrivilege('leave_request','can_view')){
+        //         access_denied();
+        //         }
         $id = $this->input->post("id");
 
         $result = $this->staff_model->getLeaveSuperRecord($id);
@@ -211,7 +224,8 @@ function deleteLeave(){
         echo json_encode($result);
     }
 
-    function dateDifference($date_1, $date_2, $differenceFormat = '%a') {
+    function dateDifference($date_1, $date_2, $differenceFormat = '%a')
+    {
         $datetime1 = date_create($date_1);
         $datetime2 = date_create($date_2);
 
@@ -220,11 +234,12 @@ function deleteLeave(){
         return $interval->format($differenceFormat) + 1;
     }
 
-    function addLeave() {
+    function addLeave()
+    {
 
-// if(!$this->rbac->hasPrivilege('leave_request','can_add')){
-//         access_denied();
-//         }
+        // if(!$this->rbac->hasPrivilege('leave_request','can_add')){
+        //         access_denied();
+        //         }
 
         $role = $this->input->post("role");
         $empid = $this->input->post("empname");
@@ -248,7 +263,7 @@ function deleteLeave(){
                 'empname' => form_error('empname'),
                 'applieddate' => form_error('applieddate'),
                 'leavedates' => form_error('leavedates'),
-				
+
             );
 
             $array = array('status' => 'fail', 'error' => $msg, 'message' => '');
@@ -280,25 +295,27 @@ function deleteLeave(){
             if (!empty($request_id)) {
 
 
-                $data = array('id' => $request_id,
+                $data = array(
+                    'id' => $request_id,
                     'staff_id' => $staff_id,
                     'date' => date('Y-m-d', $this->customlib->datetostrtotime($applied_date)),
                     'leave_type_id' => $leavetype,
                     'leave_days' => $leave_days,
                     'leave_from' => $leavefrom,
-					'leave_method' => $leave_method,
-                    'leave_to' => $leaveto, 
-					'employee_remark' => $reason,
-					 'status' => $status, 
-					 'admin_remark' => $remark,
-					  'applied_by' => $applied_by, 
-					  'document_file' => $document);
+                    'leave_method' => $leave_method,
+                    'leave_to' => $leaveto,
+                    'employee_remark' => $reason,
+                    'status' => $status,
+                    'admin_remark' => $remark,
+                    'applied_by' => $applied_by,
+                    'document_file' => $document
+                );
             } else {
 
-                $data = array('staff_id' => $staff_id, 'date' => date("Y-m-d", strtotime($applied_date)), 'leave_days' => $leave_days, 'leave_type_id' => $leavetype, 'leave_from' => $leavefrom,'leave_method' => $leave_method, 'leave_to' => $leaveto, 'employee_remark' => $reason, 'status' => $status, 'admin_remark' => $remark, 'applied_by' => $applied_by, 'document_file' => $document);
+                $data = array('staff_id' => $staff_id, 'date' => date("Y-m-d", strtotime($applied_date)), 'leave_days' => $leave_days, 'leave_type_id' => $leavetype, 'leave_from' => $leavefrom, 'leave_method' => $leave_method, 'leave_to' => $leaveto, 'employee_remark' => $reason, 'status' => $status, 'admin_remark' => $remark, 'applied_by' => $applied_by, 'document_file' => $document);
             }
 
-            
+
             $this->leaverequest_model->addLeaveRequest($data);
             $array = array('status' => 'success', 'error' => '', 'message' => "Record Saved Successfully");
         }
@@ -306,7 +323,8 @@ function deleteLeave(){
         echo json_encode($array);
     }
 
-    public function add_staff_leave() {
+    public function add_staff_leave()
+    {
 
 
         $userdata = $this->customlib->getUserData();
@@ -318,7 +336,7 @@ function deleteLeave(){
         $status = 'pending';
         $request_id = $this->input->post("leaverequestid");
 
-       
+
         $this->form_validation->set_rules('applieddate', 'Applied Date', 'trim|required|xss_clean');
         $this->form_validation->set_rules('leavedates', 'Leave from Date', 'trim|required|xss_clean');
         $this->form_validation->set_rules('leave_type', 'Leave Type', 'trim|required|xss_clean');
@@ -360,31 +378,39 @@ function deleteLeave(){
             if (!empty($request_id)) {
 
 
-                $data = array('id' => $request_id,
+                $data = array(
+                    'id' => $request_id,
                     'staff_id' => $staff_id,
                     'date' => date('Y-m-d', $this->customlib->datetostrtotime($applied_date)),
                     'leave_type_id' => $leavetype,
                     'leave_days' => $leave_days,
-					'leave_method' => $leave_method,
+                    'leave_method' => $leave_method,
                     'leave_from' => $leavefrom,
-                    'leave_to' => $leaveto, 'employee_remark' => $reason, 'status' => $status, 'admin_remark' => $remark, 'applied_by' => $applied_by, 'document_file' => $document);
+                    'leave_to' => $leaveto,
+                    'employee_remark' => $reason,
+                    'status' => $status,
+                    'admin_remark' => $remark,
+                    'applied_by' => $applied_by,
+                    'document_file' => $document
+                );
             } else {
 
-                $data = array('staff_id' => $staff_id, 'date' => date("Y-m-d", strtotime($applied_date)), 'leave_days' => $leave_days, 'leave_type_id' => $leavetype, 'leave_from' => $leavefrom, 'leave_to' => $leaveto, 'employee_remark' => $reason, 'status' => $status, 'admin_remark' => $remark, 'applied_by' => $applied_by, 'leave_method' => $leave_method,'document_file' => $document);
+                $data = array('staff_id' => $staff_id, 'date' => date("Y-m-d", strtotime($applied_date)), 'leave_days' => $leave_days, 'leave_type_id' => $leavetype, 'leave_from' => $leavefrom, 'leave_to' => $leaveto, 'employee_remark' => $reason, 'status' => $status, 'admin_remark' => $remark, 'applied_by' => $applied_by, 'leave_method' => $leave_method, 'document_file' => $document);
             }
 
-               
+
             $this->leaverequest_model->addLeaveRequest($data);
 
             $array = array('status' => 'success', 'error' => '', 'message' => "Record Saved Successfully");
         }
         echo json_encode($array);
     }
-	function addSleave() {
+    function addSleave()
+    {
 
- if(!$this->rbac->hasPrivilege('superviser_leave','can_add')){
-         access_denied();
-       }
+        if (!$this->rbac->hasPrivilege('superviser_leave', 'can_add')) {
+            access_denied();
+        }
 
         $role = $this->input->post("role");
         $empid = $this->input->post("empname");
@@ -408,7 +434,7 @@ function deleteLeave(){
                 'empname' => form_error('empname'),
                 'applieddate' => form_error('applieddate'),
                 'leavedates' => form_error('leavedates'),
-				
+
             );
 
             $array = array('status' => 'fail', 'error' => $msg, 'message' => '');
@@ -440,32 +466,35 @@ function deleteLeave(){
             if (!empty($request_id)) {
 
 
-                $data = array('id' => $request_id,
+                $data = array(
+                    'id' => $request_id,
                     'staff_id' => $staff_id,
                     'date' => date('Y-m-d', $this->customlib->datetostrtotime($applied_date)),
                     'leave_type_id' => $leavetype,
                     'leave_days' => $leave_days,
                     'leave_from' => $leavefrom,
-					'leave_method' => $leave_method,
-                    'leave_to' => $leaveto, 
-					'employee_remark' => $reason,
-					 'status' => $status, 
-					 'admin_remark' => $remark,
-					  'applied_by' => $applied_by, 
-					  'document_file' => $document);
+                    'leave_method' => $leave_method,
+                    'leave_to' => $leaveto,
+                    'employee_remark' => $reason,
+                    'status' => $status,
+                    'admin_remark' => $remark,
+                    'applied_by' => $applied_by,
+                    'document_file' => $document
+                );
             } else {
 
-                $data = array('staff_id' => $staff_id, 'date' => date("Y-m-d", strtotime($applied_date)), 'leave_days' => $leave_days, 'leave_type_id' => $leavetype, 'leave_from' => $leavefrom,'leave_method' => $leave_method, 'leave_to' => $leaveto, 'employee_remark' => $reason, 'status' => $status, 'admin_remark' => $remark, 'applied_by' => $applied_by, 'document_file' => $document);
+                $data = array('staff_id' => $staff_id, 'date' => date("Y-m-d", strtotime($applied_date)), 'leave_days' => $leave_days, 'leave_type_id' => $leavetype, 'leave_from' => $leavefrom, 'leave_method' => $leave_method, 'leave_to' => $leaveto, 'employee_remark' => $reason, 'status' => $status, 'admin_remark' => $remark, 'applied_by' => $applied_by, 'document_file' => $document);
             }
 
-            
+
             $this->superviser_model->addSuperviserLeaveRequest($data);
             $array = array('status' => 'success', 'error' => '', 'message' => "Record Saved Successfully");
         }
 
         echo json_encode($array);
     }
-	public function add_superviser_leave() {
+    public function add_superviser_leave()
+    {
 
 
         $userdata = $this->customlib->getUserData();
@@ -477,7 +506,7 @@ function deleteLeave(){
         $status = 'pending';
         $request_id = $this->input->post("leaverequestid");
 
-       
+
         $this->form_validation->set_rules('applieddate', 'Applied Date', 'trim|required|xss_clean');
         $this->form_validation->set_rules('leavedates', 'Leave from Date', 'trim|required|xss_clean');
         $this->form_validation->set_rules('leave_type', 'Leave Type', 'trim|required|xss_clean');
@@ -519,46 +548,55 @@ function deleteLeave(){
             if (!empty($request_id)) {
 
 
-                $data = array('id' => $request_id,
+                $data = array(
+                    'id' => $request_id,
                     'staff_id' => $staff_id,
                     'date' => date('Y-m-d', $this->customlib->datetostrtotime($applied_date)),
                     'leave_type_id' => $leavetype,
                     'leave_days' => $leave_days,
-					'leave_method' => $leave_method,
+                    'leave_method' => $leave_method,
                     'leave_from' => $leavefrom,
-                    'leave_to' => $leaveto, 'employee_remark' => $reason, 'status' => $status, 'admin_remark' => $remark, 'applied_by' => $applied_by, 'document_file' => $document);
+                    'leave_to' => $leaveto,
+                    'employee_remark' => $reason,
+                    'status' => $status,
+                    'admin_remark' => $remark,
+                    'applied_by' => $applied_by,
+                    'document_file' => $document
+                );
             } else {
 
-                $data = array('staff_id' => $staff_id,
-				 'date' => date("Y-m-d", strtotime($applied_date)),
-				  'leave_days' => $leave_days,
-				   'leave_type_id' => $leavetype,
-				    'leave_from' => $leavefrom,
-					 'leave_to' => $leaveto,
-					  'employee_remark' => $reason,
-					   'status' => $status,
-					    'admin_remark' => $remark,
-						 'applied_by' => $applied_by,
-						  'leave_method' => $leave_method,
-						  'document_file' => $document);
+                $data = array(
+                    'staff_id' => $staff_id,
+                    'date' => date("Y-m-d", strtotime($applied_date)),
+                    'leave_days' => $leave_days,
+                    'leave_type_id' => $leavetype,
+                    'leave_from' => $leavefrom,
+                    'leave_to' => $leaveto,
+                    'employee_remark' => $reason,
+                    'status' => $status,
+                    'admin_remark' => $remark,
+                    'applied_by' => $applied_by,
+                    'leave_method' => $leave_method,
+                    'document_file' => $document
+                );
             }
 
-           //  echo  $data;
-           $this->superviser_model->addSuperviserLeaveRequest($data);
+            //  echo  $data;
+            $this->superviser_model->addSuperviserLeaveRequest($data);
 
             $array = array('status' =>  $data, 'error' => '', 'message' => "Record Saved Successfully");
         }
         echo json_encode($array);
     }
-	
-	
-	
-	
 
-    public function test() {
 
-        $data = Array
-            (
+
+
+
+    public function test()
+    {
+
+        $data = array(
             "staff_id" => 5,
             "date" => '2018-06-25',
             "leave_days" => 1,
@@ -574,7 +612,8 @@ function deleteLeave(){
 
         $this->db->insert("staff_leave_request", $data);
     }
-	function superleaverequest() {
+    function superleaverequest()
+    {
         if (!$this->rbac->hasPrivilege('superviser_leave', 'can_view')) {
             access_denied();
         }
@@ -597,20 +636,21 @@ function deleteLeave(){
         $this->load->view("admin/staff/superviserrequest", $data);
         $this->load->view("layout/footer", $data);
     }
-	function leaveapprovesuper() {
+    function leaveapprovesuper()
+    {
         if (!$this->rbac->hasPrivilege('superviser_approve', 'can_view')) {
             access_denied();
         }
         $userdata = $this->customlib->getUserData();
         $this->session->set_userdata('top_menu', 'HR');
         $this->session->set_userdata('sub_menu', 'admin/leaverequest/leaveapprovesuper');
-		
+
         $leave_request = $this->leaverequest_model->staff_leave_super($userdata['department']);
 
         $data["leave_request"] = $leave_request;
 
         $LeaveTypes = $this->staff_model->getLeaveType();
-        
+
 
         $data["leavetype"] = $LeaveTypes;
         $staffRole = $this->staff_model->getStaffRole();
@@ -621,18 +661,18 @@ function deleteLeave(){
         $this->load->view("admin/staff/superviserapprove", $data);
         $this->load->view("layout/footer", $data);
     }
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 
- /*?><!--public function lvmethod(){
+
+
+
+
+
+
+
+
+
+
+    /*?><!--public function lvmethod(){
 	$lv=o;
 	if("dstatus"=="approve" && 'leave_method'=="full")
 	{
@@ -652,5 +692,3 @@ $this->leaverequest_model->allotedleave($data,$staff_id);
 }
 --><?php */
 }
-
-?>

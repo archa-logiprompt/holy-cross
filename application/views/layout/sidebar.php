@@ -993,20 +993,7 @@ $centre_id = $admin['centre_id'];
                                         Work Log Report</a></li>
                             <?php }
 
-                            if ($this->rbac->hasPrivilege('	
-                                        monthly_academic_report', 'can_view')) {
-                            ?>
-                                <!-- <li class="<?php echo set_Submenu('monthly_academic_report/index'); ?>"><a
-                            href="<?php echo base_url(); ?>admin/monthlyacademicreport"><i class="fa fa-angle-double-right"></i>
-                            Monthly Report- Theory</a></li> -->
-                            <?php }
-                            ?>
-                            <?php if ($this->rbac->hasPrivilege('monthly_academic_report', 'can_view')) {
-                            ?>
-                                <!-- <li class="<?php echo set_Submenu('monthly_academic_report/fullindex'); ?>"><a
-                            href="<?php echo base_url(); ?>admin/monthlyacademicreport/fullreport"><i class="fa fa-angle-double-right"></i>
-                            Monthly Report</a></li> -->
-                            <?php }
+                            
                             ?>
                             <?php if ($this->rbac->hasPrivilege('master_rotation_plan', 'can_view')) {
                             ?>
