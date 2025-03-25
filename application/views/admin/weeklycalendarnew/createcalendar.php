@@ -1058,6 +1058,8 @@
 
 
                                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                                <input type="button" class="btn btn-primary submit_addevent pull-left" value="<?php echo "Delete" ?>" onclick="deleteTimetable()">
+
                                                     <input type="submit" class="btn btn-primary submit_addevent pull-right"
                                                         value="<?php echo $this->lang->line('save'); ?>">
                                                 </div>
@@ -1082,6 +1084,32 @@
 
     </section>
 </div>
+<script>
+ function deleteTimetable() {
+        var id = $('#update_id_hidden').val();
+        $.ajax({
+            type: "POST",
+            url: base_url + "admin/teacher/deleteTimetable",
+            data: {
+                'id': id,
+            },
+            dataType: "json",
+            success: function(data) {
+                if (data.status == "fail") {
+
+                    var message = "";
+
+                    errorMsg(message);
+
+                } else {
+
+                    window.location.reload(true);
+                    successMsg(data.message);
+                }
+            }
+        });
+    }
+    </script>
 
 <script type="text/javascript">
 $(document).ready(function() {
@@ -1142,6 +1170,7 @@ $(document).ready(function() {
 
     })
 
+    
 
 
     var selected = [];

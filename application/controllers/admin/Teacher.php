@@ -13,6 +13,13 @@ class Teacher extends Admin_Controller {
         $this->role;
     }
 
+    function deleteTimetable()
+    {
+        $id = $this->input->post('id');
+        $this->db->where('id', $id)->delete('weekly_calendar');
+
+        echo json_encode(array('message' => "Timetable deleted"));
+    }
     function index() {
         $this->session->set_userdata('top_menu', 'Academics');
         $this->session->set_userdata('sub_menu', 'teacher/index');
