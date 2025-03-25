@@ -1473,32 +1473,49 @@ class Staff extends Admin_Controller
                 '12' => "December"
             );
 
-            $leaves = array();
+            $all_staffs = [];
+
             foreach ($months as $index => $month) {
-                foreach ($leaveType as $type) {
-                    $start = sprintf('%s-%02d-01', $searchyear, $index);
-                    $end = sprintf('%s-%02d-%02d', $searchyear, $index, date('t', strtotime($start)));
-                    $this->db->select('staff_leave_request.*, leave_types.id as ltid, leave_types.type,count(staff_leave_request.id) as total_leave');
-                    $this->db->join('leave_types', 'leave_types.id = staff_leave_request.leave_type_id');
-                    $this->db->from('staff_leave_request');
-                    $this->db->where('status', 'approve');
-                    $this->db->where('leave_from >=', $start); // Use correct date format
-                    $this->db->where('leave_from <=', $end);
-                    $this->db->group_by('staff_id'); // Use correct date format
-                    // $this->db->group_by('leave_types.id'); // Uncomment if needed
-                    $leave = $this->db->get()->result_array();
-                    $leaves[$index][$type['id']] = $leave;
+                $start = sprintf('%s-%02d-01', $searchyear, $index);
+                $end = sprintf('%s-%02d-%02d', $searchyear, $index, date('t', strtotime($start)));
+
+                $this->db->select('staff_leave_request.staff_id,name,surname');
+                $this->db->join('staff', 'staff.id=staff_leave_request.staff_id');
+                $this->db->from('staff_leave_request');
+                $this->db->where('status', 'approve');
+                $this->db->where('leave_from >=', $start);
+                $this->db->where('leave_from <=', $end);
+                $this->db->group_by('staff_id');
+                $staffs = $this->db->get()->result_array();
+
+                foreach ($staffs as $key =>  $staff) {
+                    foreach ($leaveType as $type) {
+                        $this->db->select('count(staff_leave_request.id) as total_leave');
+                        $this->db->join('leave_types', 'leave_types.id = staff_leave_request.leave_type_id');
+                        $this->db->from('staff_leave_request');
+                        $this->db->where('status', 'approve');
+                        $this->db->where('leave_type_id', $type['id']);
+                        $this->db->where('staff_id', $staff['staff_id']);
+                        $this->db->where('leave_from >=', $start);
+                        $this->db->where('leave_from <=', $end);
+                        $leave = $this->db->get()->row_array();
+                        $staffs[$key][$type['type']] = $leave['total_leave'];
+                    }
                 }
+
+                $all_staffs[$index] = $staffs;
             }
-            // var_dump($leaves);
+            // var_dump($alloted_leaves);
             // exit;
 
 
 
 
+
             $data['alloted_leaves'] = $alloted_leaves;
+            $data['alloted_leaves_reduced'] = $alloted_leaves;
             $data['leaveType'] = $leaveType;
-            $data['leaves'] = $leaves;
+            $data['all_staffs'] = $all_staffs;
             $data['months'] = $months;
 
             $this->load->view('layout/header', $data);

@@ -156,37 +156,31 @@ s<style type="text/css">
                                                         <tr>
                                                             <td colspan="<?php echo count($leaveType) * 3 + 1 ?>"><?php echo $month ?></td>
                                                         </tr>
-                                                        <?php if (!$leaves[$index]) { ?>
+                                                        <?php if (!$all_staffs[$index]) { ?>
                                                             <tr>
                                                                 <td colspan="<?php echo count($leaveType) * 3 + 1 ?>"><?php echo "No Leave Taken during this month" ?></td>
                                                             </tr>
                                                         <?php } else { ?>
-
-                                                            <?php foreach ($leaves[$index] as  $leave) {
-                                                                // var_dump($leave);
-                                                                // exit;
-                                                                // var_dump($alloted_leaves[$leave['staff_id']][$leave['leave_type_id']]);
-                                                                // exit;
-
-                                                                foreach ($leave as $row) {
-                                                                    // var_dump($row);
-                                                                    // exit;
+                                                            <?php foreach ($all_staffs[$index] as $staff) {
+                                                                // var_dump($all_staffs[$index]);exit;
+                                                                // var_dump($alloted_leaves[]);exit;
                                                             ?>
-                                                                    <tr>
-                                                                        <td><?php echo $row['applied_by']; ?></td>
-                                                                        <?php foreach ($alloted_leaves[$row['staff_id']] as $total_leave) { ?>
-                                                                            <td><?php echo $total_leave; ?></td>
-                                                                        <?php } ?>
+                                                                <tr>
+                                                                    <td><?php echo $staff['name'] . " " . $staff['surname']; ?></td>
+                                                                    <?php foreach ($leaveType as $type) { ?>
+                                                                        <th><?php echo $alloted_leaves[$staff['staff_id']][$type['id']] ?></th>
+                                                                    <?php } ?>
+                                                                    <?php foreach ($leaveType as $type) { ?>
+                                                                        <th><?php echo $staff[$type['type']] ?></th>
+                                                                    <?php } ?>
+                                                                    <?php foreach ($leaveType as $type) { ?>
+                                                                        <th><?php echo $alloted_leaves_reduced[$staff['staff_id']][$type['id']] -= $staff[$type['type']]; ?></th>
+                                                                    <?php } ?>
 
-
-
-
-                                                                    </tr>
-                                                                <?php }
-                                                                ?>
-
+                                                                </tr>
                                                             <?php
                                                             } ?>
+
                                                         <?php } ?>
 
 
